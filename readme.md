@@ -1,169 +1,131 @@
-# 🎓 Student Exam Score Prediction  
-### Machine Learning Regression Project
+# 🎓 Student Exam Score Prediction
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python" />
+  <img src="https://img.shields.io/badge/Scikit--Learn-ML-orange?style=for-the-badge&logo=scikitlearn" />
+  <img src="https://img.shields.io/badge/Status-Completed-success?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Type-Regression-informational?style=for-the-badge" />
+</p>
 
 ---
 
 ## 📌 Project Overview
 
-This project focuses on predicting students’ **Exam Scores** using supervised Machine Learning techniques. The objective is to analyze academic, behavioral, and lifestyle factors affecting student performance and develop regression models to estimate final exam results.
+This project predicts **Student Exam Scores** using supervised machine learning. It analyzes academic, behavioral, socioeconomic, and lifestyle factors to build accurate regression models.
 
-The dataset used in this project was sourced from **Kaggle**.
-
----
-
-## 🎯 Project Objectives
-
-- Perform data cleaning and preprocessing  
-- Conduct comprehensive Exploratory Data Analysis (EDA)  
-- Develop Linear Regression models  
-- Implement Polynomial Regression  
-- Compare multiple feature combinations  
-- Evaluate model performance using regression metrics  
-- Interpret insights from model results  
+📊 Dataset: *Student Performance Factors (Kaggle)*
+🎯 Target Variable: `Exam_Score`
 
 ---
 
-## 📂 Dataset Information
+## 🚀 Project Workflow
 
-**Dataset:** Student Performance Factors  
-**Source:** Kaggle  
-**Target Variable:** `Exam_Score`
+### 🔹 Data Processing
 
----
+* Missing value imputation (mode)
+* One-Hot Encoding for categorical features
+* StandardScaler for numerical features
+* Preprocessing pipelines using `ColumnTransformer`
 
-## 🛠 Tools & Technologies
+### 🔹 Exploratory Data Analysis
 
-- Python  
-- Pandas  
-- NumPy  
-- Matplotlib  
-- Seaborn  
-- Scikit-learn  
+* Feature distributions & count plots
+* Feature vs target visualizations
+* Correlation analysis
+* Regression plots
 
----
+### 🔹 Modeling
 
-## 🔎 Methodology
+Models evaluated:
 
-### 1️⃣ Data Cleaning
-- Inspected dataset structure and summary statistics  
-- Identified missing values  
-- Imputed categorical missing values using mode  
-- Verified data consistency  
+* Linear Regression
+* Ridge Regression
+* Lasso Regression
+* Random Forest
+* Gradient Boosting
 
----
+Evaluation Metrics:
 
-### 2️⃣ Exploratory Data Analysis (EDA)
-- Distribution analysis of categorical and numerical features  
-- Bar plots comparing feature impact on exam score  
-- Histogram & KDE visualization of score distribution  
-- Regression plots for numerical variables  
-- Correlation analysis using one-hot encoded dataset  
+* R² Score
+* MAE
+* RMSE
+* 5-Fold Cross Validation
 
 ---
 
-### 3️⃣ Model Development
+## 📊 Final Model Performance
 
-Linear regression models were built with some changes and compared:
-
-| Model | Features Used |
-|-------|--------------|
-| Model 1 | Hours_Studied |
-| Polynomial Model 1 | Hours_Studied (Degree 2) |
-| Model 2 | Hours_Studied, Attendance |
-| Model 2 (Polynomial) | Degree 2 transformation |
-| Model 3 | Hours_Studied, Attendance, Previous_Scores |
-| Model 3 (Polynomial) | Degree 2 transformation |
+| Model             | R²         | MAE       | RMSE      |
+| ----------------- | ---------- | --------- | --------- |
+| 🏆 **Ridge**      | **0.7697** | **0.452** | **1.804** |
+| Linear            | 0.7696     | 0.452     | 1.804     |
+| Gradient Boosting | 0.7309     | 0.819     | 1.950     |
+| Lasso             | 0.7043     | 0.994     | 2.045     |
+| Random Forest     | 0.6526     | 1.165     | 2.216     |
 
 ---
 
-## 📊 Model Performance Results
+## 🏆 Best Model: Ridge Regression
 
-The models were evaluated using:
-
-- **MAE** (Mean Absolute Error)  
-- **MSE** (Mean Squared Error)  
-- **RMSE** (Root Mean Squared Error)  
-- **R² Score** (Coefficient of Determination)  
-
-### 🔬 Final Comparison Table
-
-| Model | MAE | MSE | RMSE | R² Score |
-|-------|------|------|--------|----------|
-| Model 3 | 1.359207 | 5.338274 | 2.310471 | 0.622338 |
-| Model 3 (Polynomial) | 1.358279 | 5.341410 | 2.311149 | 0.622117 |
-| Model 2 | 1.468964 | 5.809117 | 2.410211 | 0.589028 |
-| Model 2 (Polynomial) | 1.467214 | 5.812159 | 2.410842 | 0.588813 |
-| Polynomial Model 1 | 2.444780 | 10.844988 | 3.293173 | 0.232760 |
-| Model 1 | 2.447569 | 10.855921 | 3.294833 | 0.231987 |
+✔ Explains ~77% of variance
+✔ Lowest prediction error
+✔ Handles multicollinearity
+✔ Highly interpretable
 
 ---
 
-## 🏆 Best Performing Model
+## 💡 Key Insights
 
-### ✅ Model 3 (Linear Regression)
-
-- **Highest R² Score:** 0.622338  
-- **Lowest error metrics overall**  
-- Explains approximately **62% of the variance** in exam scores  
-
-### Key Insight:
-Polynomial transformations did **not** significantly improve performance, indicating that the relationship between selected features and exam score is predominantly **linear**.
-
-Increasing feature relevance had a greater impact than increasing model complexity.
+* The problem is predominantly **linear**.
+* Adding relevant features improves performance more than increasing model complexity.
+* Polynomial expansion did not significantly improve results.
+* Tree-based models did not outperform linear models.
 
 ---
 
-## 📈 Visualizations Included
+## 💾 Model Artifacts
 
-- Feature distribution plots  
-- Target variable distribution  
-- Feature vs Target regression plots  
-- Actual vs Predicted comparison graphs  
-- Correlation analysis  
-- Model performance comparison table  
+All trained pipelines (preprocessing + model) are saved using `joblib`.
+
+```
+models/
+    linear.pkl
+    ridge.pkl
+    lasso.pkl
+    random_forest.pkl
+    gradient_boosting.pkl
+    fitted_pipelines.pkl
+```
+
+Load a saved model:
+
+```python
+import joblib
+model = joblib.load("models/ridge.pkl")
+predictions = model.predict(X_new)
+```
 
 ---
 
-## 🚀 Future Improvements
+## 🛠 Tech Stack
 
-- Apply K-Fold Cross Validation  
-- Implement Ridge and Lasso Regression  
-- Try Tree-based models (Random Forest, Gradient Boosting)  
-- Add clustering (K-Means) for student segmentation  
-- Deploy as a Streamlit dashboard  
+* Python
+* Pandas & NumPy
+* Matplotlib & Seaborn
+* Scikit-learn
+* Joblib
 
 ---
 
 ## 🧠 Skills Demonstrated
 
-- Data Cleaning & Preprocessing  
-- Exploratory Data Analysis  
-- Regression Modeling  
-- Polynomial Feature Engineering  
-- Model Evaluation & Comparison  
-- Analytical Interpretation of Results  
+`Regression` • `Feature Engineering` • `Model Evaluation` • `Cross-Validation` • `Pipelines` • `Regularization`
 
 ---
 
-## 📦 How to Run the Project
+## 📌 Conclusion
 
-```bash
-# Clone the repository
-git clone https://github.com/UFAQUE123/Student-Score-Prediction.git
-
-# Install dependencies
-pip install pandas numpy matplotlib seaborn scikit-learn
-
-# Run the notebook or script
-```
+This project demonstrates a complete end-to-end regression workflow — from data exploration to deployment-ready model serialization. Ridge Regression proved to be the most stable and accurate approach for predicting student exam performance.
 
 ---
-## Model Performance Insights
 
-- Based on the comparative evaluation of all models using MAE, MSE, RMSE, and R² score, Model 3 (Linear Regression) demonstrates the best overall performance. It achieved the lowest error values (MAE = 1.359, RMSE ≈ 2.31) and the highest explanatory power (R² ≈ 0.622), indicating that it explains approximately 62% of the variance in exam scores.
-
-- The polynomial version of Model 3 did not provide any meaningful improvement in predictive accuracy, as its performance metrics remained nearly identical and slightly lower in terms of R². A similar pattern is observed for Model 2 and its polynomial counterpart, where polynomial transformation does not enhance model performance.
-
-- Model 1, both linear and polynomial, shows significantly weaker performance (R² ≈ 0.23), suggesting that it lacks sufficient predictive features to accurately model exam scores.
-
-- Overall, the results indicate that the relationship between the selected features and the target variable is predominantly linear. Increasing model complexity through polynomial transformation does not improve performance and may introduce unnecessary complexity. Therefore, Model 3 (Linear Regression) is the most appropriate and efficient model for predicting exam scores in this analysis.
